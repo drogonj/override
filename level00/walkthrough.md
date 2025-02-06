@@ -6,8 +6,6 @@
 
 (Explications des protections dans Ressources/learning)
 
-
-
 ### Analyse
 
 (voir ./source.c)
@@ -19,25 +17,25 @@ Le programme contient uniquement une fonction `main()`.
 
 Comme dans SnowCrash et Rainfall, les programmes possedent le bit SUID ce qui signifie qu'on l'execute avec les droits du proprietaire, en l'occurence `level01`.
 
-
-
 ### Exploitation
 
 La conversion de `0x149c` nous donne **5276**.
 
 Il nous suffit donc de donner ce nombre au programme est la comparaison sera *vraie*.
 
-> level00@OverRide:~$ ./level00
-> Password:5276
->
-> Authenticated!
-> $ whoami
-> level01
+```
+level00@OverRide:~$ ./level00
+Password:5276Authenticated!
+$ whoami
+level01
+```
 
 Il nous suffit ensuite de faire un `cat` de `/home/users/level01/.pass` dans ce meme terminal.
 
-> $ cat /home/users/level01/.pass
-> uSq2ehEGT6c9S24zbshexZQBXUGrncxn5sD5QfGL
+```
+cat /home/users/level01/.pass
+uSq2ehEGT6c9S24zbshexZQBXUGrncxn5sD5QfGL
+```
 
 Notre flag est donc **uSq2ehEGT6c9S24zbshexZQBXUGrncxn5sD5QfGL**
 
