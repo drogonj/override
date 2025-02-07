@@ -46,8 +46,11 @@ fjAwpJNs2vvkFLRebEvAQ2hFZ4uQBWfHRsP62d8S
 ## Second solution
 
 Au lieu de chmod le home on peut recreer le dossier backups dans /tmp/
+
 Creer un dossier sur lequel on va link le home du level09
+
 Executer le binaire depuis le dossier /tmp/ avec comme parametre le .pass du dossier link sur le home
+
 
 ```
 mkdir -p /tmp/backups/link/
