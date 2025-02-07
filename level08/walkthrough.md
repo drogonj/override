@@ -10,7 +10,7 @@ Le programme recoit en argument un chemin vers un fichier qu'il va ouvrir.
 
 Il ouvre egalement un fichier a la destination `./backups/.log` et **prepare la creation d'une copie de notre fichier dans ce meme repertoire**.
 
-On constate la presencde du **FULL RELRO** et de **Canary**, ce qui complique les exploitations directes du programme tel que les Buffer Overflows, ou les Ret2Libc.
+On constate la presence du **FULL RELRO** et de **Canary**, ce qui complique les exploitations directes du programme tel que les Buffer Overflows, ou les Ret2Libc.
 
 On dispose des permissions de lecture sur les copies dans `~/backups/`.
 
