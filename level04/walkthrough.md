@@ -20,7 +20,7 @@
 
 ## Exploitation
 
-- On connait l'utilisation d'exploit comme le ret2libc qui permet de rediriger le flux d'execution vers un system(exit("/bin/sh")) et qui contourne la protection du exec().
+- On connait l'utilisation d'exploit comme le ret2libc qui permet de rediriger le flux d'execution vers un system("/bin/sh") et qui contourne la protection du exec().
 
 - On peut trouver l'offset de la modification du saved eip de la fonction en envoyant un buffer overflow pattern. La particularite ici est qu'il n'y aura pas de segmentation fault car le parent wait(1) et le process run a l'infini. Il existe une option sur gdb pour suivre l'execution du fils : set follow-fork-mode child. En activant cette option on arrive a voir le segmentation fault et obtenir l'offset.
 
