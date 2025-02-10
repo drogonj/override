@@ -25,7 +25,8 @@ Il nous suffit donc de donner ce nombre au programme est la comparaison sera *vr
 
 ```
 level00@OverRide:~$ ./level00
-Password:5276Authenticated!
+Password:5276
+Authenticated!
 $ whoami
 level01
 ```
